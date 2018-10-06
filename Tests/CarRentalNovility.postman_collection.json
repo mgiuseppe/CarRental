@@ -1,0 +1,315 @@
+{
+	"info": {
+		"_postman_id": "686a53a1-f150-466b-9ead-78e648c90819",
+		"name": "CarRentalNovility",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BookReservation Invalid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1640d430-669c-4384-b919-c104a2e9192b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"carId\": 0,\r\n  \"clientId\": 0,\r\n  \"pickUpDateTime\": \"2018-10-06T16:21:36.668Z\",\r\n  \"returnDateTime\": \"2018-10-06T16:21:36.669Z\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BookReservation Ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a6fdbbc9-0269-4485-be84-4874df3aa962",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"carId\": 2,\r\n  \"clientId\": 2,\r\n  \"pickUpDateTime\": \"2099-10-06T16:21:36.668Z\",\r\n  \"returnDateTime\": \"2099-10-06T16:22:36.669Z\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PickUpCar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "51490fb4-4624-4b01-af1d-f5d49e7e5a73",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations/1/PickUpCar",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations",
+						"1",
+						"PickUpCar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ReturnCar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5976116-226a-49e5-8c4b-023d00ace35c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations/1/ReturnCar",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations",
+						"1",
+						"ReturnCar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelReservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0183b040-6335-4dc0-b329-b15401340fd1",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations/2/CancelReservation",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations",
+						"2",
+						"CancelReservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBalance Invalid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c44e103c-602d-4a4e-a86a-a18fe14a3b2a",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Clients/12/Balance",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Clients",
+						"12",
+						"Balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBalance Ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4250fe8-94b1-416e-9f12-402310c4df5f",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Clients/1/Balance",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Clients",
+						"1",
+						"Balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BrowseReservations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "65036c31-0262-4e6d-b9ed-a9341f9e620a",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://localhost:44387/api/Reservations",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44387",
+					"path": [
+						"api",
+						"Reservations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
