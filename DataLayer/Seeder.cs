@@ -1,8 +1,6 @@
 ﻿using CarRentalNovility.Entities;
 using DataLayer.Repositories.Contracts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CarRentalNovility.DataLayer
