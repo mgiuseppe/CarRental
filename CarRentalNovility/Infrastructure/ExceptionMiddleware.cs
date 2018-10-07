@@ -1,11 +1,8 @@
 ﻿using CarRentalNovility.Entities.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CarRentalNovility.Web.Infrastructure
@@ -27,19 +24,22 @@ namespace CarRentalNovility.Web.Infrastructure
             {
                 await next(httpContext);
             }
-            catch (Exception ex)
+            catch (Exception ex) //doesn't catch 404 or other http errors thrown in controllers because they are not exceptions.
             {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
+                var internalErrorCode = (ex as CustomException)?.code ?? ErrorCode.GenericException;
+                
+                //set status code
+                httpContext.Response.StatusCode = (int) internalErrorCode.ToHttpStatusCode();
+                
                 //log error
                 logger.LogError(ex, $"Response status code {httpContext.Response.StatusCode}" + Environment.NewLine +
                                     $"request path {httpContext.Request.Path}" + Environment.NewLine +
                                     $"Request querystring: {httpContext.Request.QueryString}" + Environment.NewLine// +
                                     //$"Request body: {httpContext.Request.GetBodyAsString()}"
                                     );
-
+                
                 //write details in the http response
-                var errorDetails = new ErrorDetails() { StatusCode = (ex as CustomException)?.code ?? ErrorCode.GenericException, Message = ex.Message }.ToString();
+                var errorDetails = new ErrorDetails() { StatusCode = internalErrorCode, Message = ex.Message }.ToString();
                 await httpContext.Response.WriteAsync(errorDetails);
             }
         }
