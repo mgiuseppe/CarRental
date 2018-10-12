@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace CarRentalNovility.DataLayer
 {
+    [Obsolete("Now I use EFCore HasData methods to seed. I keep this class for future reference.")]
     public class Seeder
     {
         private readonly CarRentalDbContext ctx;

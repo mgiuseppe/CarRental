@@ -51,20 +51,35 @@ namespace CarRentalNovility
                 opt.IncludeXmlComments(xmlPath);
             });
 
-            services.AddDbContext<CarRentalDbContext>(opt =>
-            {
-                opt.UseInMemoryDatabase("Test"); //TODO* DB MSSQL
-            });
-            services.AddTransient<Seeder>();
-
             services.AddLogging();
-
-            AddBusinessServices(services);
 
             services.AddAutoMapper(opt =>
             {
                 opt.AddProfile(typeof(MappingProfile));
             });
+
+            AddDbContext(services);
+
+            AddBusinessServices(services);
+        }
+
+        private void AddDbContext(IServiceCollection services)
+        {
+            if (Configuration.IsUseInMemoryDb())
+            {
+                services.AddDbContext<CarRentalDbContext>(opt =>
+                {
+                    opt.UseInMemoryDatabase("Test");
+                });
+            }
+            else
+            {
+                services.AddDbContext<CarRentalDbContext>(opt =>
+                {
+                    opt.UseSqlServer(Configuration.GetDbConnectionString());
+                });
+            }
+            //services.AddTransient<Seeder>();
         }
 
         private static void AddBusinessServices(IServiceCollection services)
@@ -79,9 +94,9 @@ namespace CarRentalNovility
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration, ILoggerFactory loggerFactory, Seeder seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfiguration configuration, ILoggerFactory loggerFactory, CarRentalDbContext dbContext) //,Seeder seeder)
         {
-            loggerFactory.AddFile(configuration.GetSection("Logging").GetValue<string>("FileTarget"));
+            loggerFactory.AddFile(configuration.GetLoggingFileTarget());
 
             if (env.IsDevelopment())
             {
@@ -93,7 +108,7 @@ namespace CarRentalNovility
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(opt =>
             {
@@ -104,9 +119,10 @@ namespace CarRentalNovility
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseMvc();
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() && Configuration.IsUseInMemoryDb())
             {
-                seeder.Seed().Wait();
+                dbContext.Database.EnsureCreated(); //EnsureCreated doesn't run migrations but create the db if not exists and run the HasData methods to seed the db.
+                //seeder.Seed().Wait(); // Now I'm using EF Core 2.1 seeding. See OnModelCreating in CarRentalDbContext
             }
         }
     }
